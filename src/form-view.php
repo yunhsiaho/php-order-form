@@ -1,7 +1,8 @@
+
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -9,64 +10,11 @@
     <title>Order Pizzas & drinks</title>
 </head>
 <body>
-<?php
-    $street=" ";
-    $streetnumber=" ";
-    $city= " ";
-    $zipcode=" ";
-    if(isset($_POST["street"], $_POST["streetnumber"], $_POST["city"], $_POST["zipcode"], $_POST["email"])){
-        
-        if(filter_var($_POST["email"],FILTER_VALIDATE_EMAIL)&&!empty($_POST["zipcode"])){
-            $email=$_POST["email"];
-        }else{ 
-            $email="Unknown email";           
-            $emailErr='<div class="alert alert-danger" role="alert">
-            Enter a valide email!
-            </div>';
-            // mail($email,"subject", "body");
-        }
-        if(empty($_POST["street"])){
-            $street="Unknown street";
-            $streetErr='<div class="alert alert-danger" role="alert">
-            Enter the street!
-            </div>';
-        }else{
-            $street=$_POST["street"];
-        }
-        if(filter_var($_POST["streetnumber"],FILTER_VALIDATE_INT)&&!empty($_POST["street"])){
-            $streetnumber=$_POST["streetnumber"];
-        }else{
-            $streetnumber="Unknown streetnumber";
-            $streetnumberErr='<div class="alert alert-danger" role="alert">
-            Enter a number for streetnumber!
-            </div>';
-        }
-        if(empty($_POST["city"])){
-            $city="Unknown city";
-            $cityErr='<div class="alert alert-danger" role="alert">
-            Enter the city!
-            </div>';
-        }else{
-            $city=$_POST["city"];
-        }
-        if(filter_var($_POST["zipcode"],FILTER_VALIDATE_INT)&&!empty($_POST["zipcode"])){
-            $zipcode=$_POST["zipcode"];            
-        }else{
-            $zipcode="Unknown zipcode";
-            $zipcodeErr='<div class="alert alert-danger" role="alert">
-            Enter a number for zipcode!
-            </div>';                        
-        }
-        $niceAlert="Info received!"."</br>".
-        "Your address is: $street, $streetnumber, $city $zipcode "."</br>".
-        "Your email is: $email";     
-    }
-    ?>
 
 <div class="container">
-<div class="alert alert-info" role="alert">
-    <?=$niceAlert ?? ""?>
-</div>
+    <div class="alert alert-info" role="alert">
+        <?=$niceAlert ?? ""?>
+    </div>
     <h1>Order pizzas in restaurant "the Personal Pizza Processors"</h1>
     <nav>
         <ul class="nav">
@@ -82,7 +30,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="email">E-mail:</label>
-                <input type="text" id="email" name="email" class="form-control" value="<?=$email ?? ""?>"/>
+                <input type="text" id="email" name="email" class="form-control" value="<?=$emailFillIn ?? ""?>" require/>
                 <?=$emailErr ?? "" ?>
             </div>
             <div></div>
@@ -90,28 +38,29 @@
 
         <fieldset>
             <legend>Address</legend>
-
-            <div class="form-row">
+            <div class="form-row">                
+                <input type="checkbox" name="saveAddress" value="Yes" />
+                <label for="saveAddress">Save your address for next time</label>
                 <div class="form-group col-md-6">
                     <label for="street">Street:</label>
-                    <input type="text" name="street" id="street" class="form-control" value="<?=$street ?? ""?>">
+                    <input type="text" name="street" id="street" class="form-control" value="<?=$streetFillIn ?? ""?>">
                     <?=$streetErr ?? "" ?>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
-                    <input type="text" id="streetnumber" name="streetnumber" class="form-control" value="<?=$streetnumber ?? ""?>">
+                    <input type="text" id="streetnumber" name="streetnumber" class="form-control" value="<?=$streetnumberFillIn ?? ""?>">
                     <?=$streetnumberErr ?? "" ?>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="city">City:</label>
-                    <input type="text" id="city" name="city" class="form-control" value="<?=$city ?? ""?>">
+                    <input type="text" id="city" name="city" class="form-control" value="<?=$cityFillIn ?? ""?>">
                     <?=$cityErr ?? "" ?>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
-                    <input type="text" id="zipcode" name="zipcode" class="form-control" value="<?=$zipcode ?? ""?>">
+                    <input type="text" id="zipcode" name="zipcode" class="form-control" value="<?=$zipcodeFillIn ?? ""?>">
                     <?=$zipcodeErr ?? "" ?>
                 </div>
             </div>
@@ -130,14 +79,22 @@
             <input type="checkbox" name="express_delivery" value="5" /> 
             Express delivery (+ 5 EUR) 
         </label>
-            
-        <button type="submit" class="btn btn-primary">Order!</button>
+        <button type="submit" class="btn btn-primary" name="submit">Order!</button>
+        
     </form>
     
-    <footer>You already ordered <strong>&euro; <?php echo $totalValue ?></strong> in pizza(s) and drinks.</footer>
+    <footer>
+    You already ordered <strong>&euro; <?php echo $totalValue ?></strong> in pizza(s) and drinks.
+    And your order will be arrived in <?php echo $deliverTime ?> hour.
+    </footer>
 </div>
 
 <style>
+    /* body{
+        background:url("back1.png") repeat;
+        color:darkblue;
+        text-shadow:1px 1px 1.2px blue;
+    } */
     footer {
         text-align: center;
     }
