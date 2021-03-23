@@ -21,7 +21,7 @@
     <h1><i class="fas fa-pizza-slice"></i> Pizza Bella online ordering form <i class="fas fa-pizza-slice"></i></h1>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" class="form"> 
         <div class="row">   
-            <div class="left col-5">
+            <div class="left col-12 col-md-5">
                 <div class="form-row ">
                     <div class="form-group col-md-12">
                         <label for="email">E-mail:</label>
@@ -60,7 +60,7 @@
                     </div>
                 </fieldset>   
             </div>
-            <div class="right col-5">
+            <div class="right col-12 col-md-5">
                 <div class="d-flex flex-row flex-wrap  justify-content-center">
                     <a class="nav-link active" href="?food=1">Order pizzas</a>
                     <a class="nav-link" href="?food=0">Order drinks</a>
@@ -86,6 +86,7 @@
     <footer>
     Ordering history -- You have already ordered <strong>&euro; <?=$_COOKIE["totalValue"] ?? 0 ?></strong> in pizza(s) and drinks. You are an amazing client, we love you so much ♥</br>
     <hr/>
+    Create by Hsia <a href="https://github.com/yunhsiaho">Github</a>
     </footer>
 </div>
 
@@ -94,13 +95,12 @@
         background-color:#1e212d;
         font-family: 'Caveat', cursive;
         font-family: 'Sansita Swashed', cursive;
-        font-size:1.3vw;
+        font-size:1.3rem;
         color:#faf3e0;
         text-align:center;
     }
     .container{
         width:80%;
-        border:1px solid white;
     }
     .left{
         margin-left:auto;
@@ -111,9 +111,6 @@
         margin-left:auto;
         margin-right:auto;
         padding:5%;
-    }
-    .col-5{
-        border:1px solid white;
     }
     footer {
         text-align: center;
