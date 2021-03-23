@@ -1,5 +1,5 @@
 # Php-order-form
-[pizza form link](https://pizza-form.herokuapp.com/src/index.php)
+[https://pizza-form.herokuapp.com/src/index.php](https://pizza-form.herokuapp.com/src/index.php)
 
 # 
 Php-order-form is a project made by Hsia. It's a challenge asigned by BECODE LIEGE code training center. I have been working on this from 18/03/2021 to 23/03/2021 to learn about the basic knowledge of PHP, how to create PHP images, how to manage docker and how to use heroku...etc.
