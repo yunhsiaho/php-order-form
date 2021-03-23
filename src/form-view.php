@@ -18,17 +18,16 @@
     <div class="alert alert-warning" role="alert">
         <?=$niceAlert ?? ""?>
     </div>
-    <h1>Order pizzas in restaurant "the Personal Pizza Processors"</h1>
-    <div class="row">   
-        <div class="left col-5">
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" class="form"> 
+    <h1><i class="fas fa-pizza-slice"></i> Pizza Bella online ordering form <i class="fas fa-pizza-slice"></i></h1>
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" class="form"> 
+        <div class="row">   
+            <div class="left col-5">
                 <div class="form-row ">
                     <div class="form-group col-md-12">
                         <label for="email">E-mail:</label>
                         <input type="text" id="email" name="email" class="form-control" value="<?=$emailFillIn ?? '' ?>" require/>
                         <?=$emailErr ?? ' ' ?>
                     </div>
-                    <div></div>
                 </div>
 
                 <fieldset>
@@ -59,11 +58,9 @@
                             <?=$zipcodeErr ?? "" ?>
                         </div>
                     </div>
-                </fieldset>
-            </form>    
-        </div>
-        <div class="right col-5">
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" class="form"> 
+                </fieldset>   
+            </div>
+            <div class="right col-5">
                 <div class="d-flex flex-row flex-wrap  justify-content-center">
                     <a class="nav-link active" href="?food=1">Order pizzas</a>
                     <a class="nav-link" href="?food=0">Order drinks</a>
@@ -76,7 +73,6 @@
                             &euro; <?php echo number_format($product['price'], 2) ?></label><br />
                     <?php endforeach; ?>
                 </fieldset>
-                
                 <label>
                     <input type="checkbox" name="express_delivery" value="5" /> 
                     Express delivery (+ 5 EUR) 
@@ -84,23 +80,21 @@
                 <br/>
                 <br/>
                 <button type="submit" class="btn btn-primary" name="submit">Order!</button>
-            </form>
-        </div>
-    </div>
+            </div>
+        </div>    
+    </form>
     <footer>
-    You already ordered <strong>&euro; <?=$_COOKIE["showTotalValue"] ?? 0 ?></strong> in pizza(s) and drinks.</br>
-    <i class="fas fa-fighter-jet"></i> Our drone will deliver your order in <strong><?php echo $deliverTime ?? '?' ?> hour</strong>.<hr/>
+    Ordering history -- You have already ordered <strong>&euro; <?=$_COOKIE["totalValue"] ?? 0 ?></strong> in pizza(s) and drinks. You are an amazing client, we love you so much ♥</br>
+    <hr/>
     </footer>
 </div>
 
 <style>
     body{
         background-color:#1e212d;
-        /* color:darkblue;
-        text-shadow:1px 1px 1.2px blue; */
         font-family: 'Caveat', cursive;
         font-family: 'Sansita Swashed', cursive;
-        font-size:1.2vw;
+        font-size:1.3vw;
         color:#faf3e0;
         text-align:center;
         align-items:center;

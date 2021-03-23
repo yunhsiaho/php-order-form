@@ -21,7 +21,7 @@ $products = getProducts();
 function getProducts () {
     $products = [
         ['name' => 'Margherita', 'price' => 8],
-        ['name' => 'Hawaï', 'price' => 8.5],
+        ['name' => 'Hawaï (toxique)', 'price' => 8.5],
         ['name' => 'Salami pepper', 'price' => 10],
         ['name' => 'Prosciutto', 'price' => 9],
         ['name' => 'Parmiggiana', 'price' => 9],
@@ -32,14 +32,14 @@ function getProducts () {
     ];
 
     if(isset($_GET['food']) && $_GET["food"] == "0"){
-            $products = [
-                ['name' => 'Water', 'price' => 1.8],
-                ['name' => 'Sparkling water', 'price' => 1.8],
-                ['name' => 'Cola', 'price' => 2],
-                ['name' => 'Fanta', 'price' => 2],
-                ['name' => 'Sprite', 'price' => 2],
-                ['name' => 'Ice-tea', 'price' => 2.2],
-            ];
+        $products = [
+            ['name' => 'Water', 'price' => 1.8],
+            ['name' => 'Sparkling water', 'price' => 1.8],
+            ['name' => 'Cola', 'price' => 2],
+            ['name' => 'Fanta', 'price' => 2],
+            ['name' => 'Sprite', 'price' => 2],
+            ['name' => 'Ice-tea', 'price' => 2.2],
+        ];
     };
 
     return $products;
@@ -47,7 +47,7 @@ function getProducts () {
 
 
 //your products with their price.
-
+$invoice = 0;
 if(isset($_POST["street"], $_POST["streetnumber"], $_POST["city"], $_POST["zipcode"], $_POST["email"],$_POST["submit"])){
     $email="";
     $street="";
@@ -55,6 +55,7 @@ if(isset($_POST["street"], $_POST["streetnumber"], $_POST["city"], $_POST["zipco
     $city= "";
     $zipcode="";
     $submit=$_POST["submit"];
+    $info = "Info received!";
     if(filter_var($_POST["email"],FILTER_VALIDATE_EMAIL)&&!empty($_POST["zipcode"])){
         $email=$_POST["email"];
     }else{ 
@@ -63,6 +64,7 @@ if(isset($_POST["street"], $_POST["streetnumber"], $_POST["city"], $_POST["zipco
         Enter a valide email!
         </div>';
         $submit=false;
+        $info = "Incorrect info, please try again.";
     }
     if(empty($_POST["street"])){
         $streetFillIn=$_POST["street"];
@@ -70,6 +72,8 @@ if(isset($_POST["street"], $_POST["streetnumber"], $_POST["city"], $_POST["zipco
         Enter the street!
         </div>';
         $submit=false;
+        $info = "Incorrect info, please try again.";
+
     }else{
         $street=$_POST["street"];            
     }
@@ -81,6 +85,8 @@ if(isset($_POST["street"], $_POST["streetnumber"], $_POST["city"], $_POST["zipco
         Enter a number for streetnumber!
         </div>';
         $submit=false;
+        $info = "Incorrect info, please try again.";
+
     }
     if(empty($_POST["city"])){
         $cityFillIn=$_POST["city"];
@@ -88,6 +94,8 @@ if(isset($_POST["street"], $_POST["streetnumber"], $_POST["city"], $_POST["zipco
         Enter the city!
         </div>';
         $submit=false;
+        $info = "Incorrect info, please try again.";
+
     }else{
         $city=$_POST["city"];
     }
@@ -98,60 +106,58 @@ if(isset($_POST["street"], $_POST["streetnumber"], $_POST["city"], $_POST["zipco
         $zipcodeErr='<div class="alert alert-danger" role="alert">
         Enter a number for zipcode!
         </div>';     
-        $submit=false;                 
+        $submit=false;
+        $info = "Incorrect info, please try again.";
     }
     //save address checkbox
     if(isset($_POST['saveAddress'])){
-        setcookie("street", $street, time()+60*60*24*7,"/");
-        $streetFillIn=$_COOKIE["street"];
-        setcookie("streetnumber", $streetnumber, time()+60*60*24*7,"/");
-        $streetnumberFillIn=$_COOKIE["streetnumber"];
-        setcookie("city", $city, time()+60*60*24*7,"/");
-        $cityFillIn=$_COOKIE["city"];
-        setcookie("zipcode", $zipcode, time()+60*60*24*7,"/");
-        $zipcodeFillIn=$_COOKIE["zipcode"];
+        setcookie("street", "{$street}", time()+60*60*24*7,"/");
+        $streetFillIn=$_COOKIE["street"]?? "";
+        setcookie("streetnumber", "{$streetnumber}", time()+60*60*24*7,"/");
+        $streetnumberFillIn=$_COOKIE["streetnumber"]?? "";
+        setcookie("city", "{$city}", time()+60*60*24*7,"/");
+        $cityFillIn=$_COOKIE["city"]?? "";
+        setcookie("zipcode", "{$zipcode}", time()+60*60*24*7,"/");
+        $zipcodeFillIn=$_COOKIE["zipcode"]?? "";
     }
     //the blue alert box above
-    $niceAlert="Info received!"."</br>".
-    "Your address is: $street, $streetnumber, $city $zipcode "."</br>".
-    "Your email is: $email";   
 
-    if(isset($_COOKIE['showTotalValue'])){
-        $totalValue = 0;
-        $totalValue = (float) $_COOKIE['showTotalValue'];
+    if(isset( $_COOKIE["totalValue"])){
+        $totalValue =  (float) $_COOKIE["totalValue"];
     }else{
-        $totalValue = 0;
-    }
-    
+        $totalValue = 0; 
+    };
+    foreach ($products AS $i => $product){
+        if(!empty($_POST["product-{$i}"])){
+            $totalValue += $product['price'];
+            $invoice += $product['price'];
+        }
+    } 
     $deliverTime = 1;
-    if(isset($_POST['express_delivery'])){
+    if(!empty($_POST['express_delivery'])){
         $deliverTime = 0.5;
         $totalValue+=5;
+        $invoice+=5;
     }
-    foreach ($products AS $i => $product){
-        if(isset($_POST["product-{$i}"])){
-            $totalValue += $product['price'];
-        }
-    }
-    setcookie("showTotalValue", "$totalValue", time()+60*60*24,"/");
 
+    setcookie("totalValue", "{$totalValue}", time()+60*60*24,"/");
+    if(isset($submit)){
+        $totalValue = (float) $_COOKIE["totalValue"]?? 0;
+    } 
+    $niceAlert="<strong>$info</strong>"."</br>".
+    "Your address is: $street, $streetnumber, $city $zipcode . "."Your email is: $email"."</br>".
+    "The total price is <strong>&euro;$invoice</strong> . ". "Our drone will deliver your order in <strong>$deliverTime hour</strong> ✈ "; 
     //mail
     $subject = 'the pizzas order';
-    define("Greeting", "to $email
-    Hello cher client,
-    We have received your order and it will be sent to
-    $street, $streetnumber, $city $zipcode in $deliverTime hr.
-    The total price is $totalValue dollars.
+    define("Greeting", "to $email\r\n
+    Hello cher client,\r\n
+    We have received your order and it will be sent to\r\n
+    $street, $streetnumber, $city $zipcode in $deliverTime hr.\r\n
+    The total price is $totalValue dollars.\r\n
     Thank you very much and bon apetit!");
 
-    mail($email,$subject , "Greeting");
+    mail($email,$subject,"Greeting");
 } 
-
-
-
-
-
-
 
 require 'form-view.php';
 
