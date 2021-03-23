@@ -97,17 +97,14 @@
         font-size:1.3vw;
         color:#faf3e0;
         text-align:center;
-        align-items:center;
     }
     .container{
         width:80%;
-        /* border:1px solid white; */
-        justify-content:end; 
+        border:1px solid white;
     }
     .left{
         margin-left:auto;
         margin-right:auto;
-        justify-content:end; 
         padding:5%;
     }
     .right{
@@ -115,9 +112,9 @@
         margin-right:auto;
         padding:5%;
     }
-    /* .col-5{
+    .col-5{
         border:1px solid white;
-    } */
+    }
     footer {
         text-align: center;
     }
